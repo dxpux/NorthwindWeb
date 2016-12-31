@@ -1,0 +1,42 @@
+﻿@using NorthwindModel
+@model IEnumerable<Product>
+@{
+    ViewBag.Title = "產品管理";
+}
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h1>產品管理</h1>
+    </div>
+    <div class="panel-body">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>商品名稱</th>
+                                <th>庫存單位量</th>
+                                <th>訂貨單位量</th>
+                                <th>單位數量</th>
+                                <th>單位價格</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var product in Model)
+                            {
+                                <tr>
+                                    <td>@product.ProductName</td>
+                                    <td>@product.UnitsInStock</td>
+                                    <td>@product.UnitsOnOrder</td>
+                                    <td>@product.QuantityPerUnit</td>
+                                    <td>@product.UnitPrice</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
