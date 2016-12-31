@@ -16,5 +16,5 @@ BEGIN
       ,[UnitsOnOrder]
       ,[ReorderLevel]
       ,[Discontinued]
-	FROM [NORTHWIND].[dbo].[Products]
+	FROM [dbo].[Products]
 END

@@ -8,6 +8,24 @@ namespace NorthwindModel.Interface
 {
     public interface IProductRepository
     {
+        #region Product
+
+        void Add(Product product);
+        Product FindByName(string productName);
         IEnumerable<Product> GetAll();
+
+        #endregion
+
+        #region Supplier
+
+        IEnumerable<Supplier> GetAllSupplier();
+
+        #endregion
+
+        #region Category
+
+        IEnumerable<Category> GetAllCategory();
+
+        #endregion
     }
 }

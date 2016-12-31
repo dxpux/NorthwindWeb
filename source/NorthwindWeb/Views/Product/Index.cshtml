@@ -1,41 +1,119 @@
 ﻿@{
     ViewBag.Title = "產品管理";
 }
-
-<div id="productApp" class="panel panel-default">
-    <div class="panel-heading">
-        <h1>產品管理</h1>
-    </div>
-    <div class="panel-body">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-12">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>商品名稱</th>
-                                <th>庫存單位量</th>
-                                <th>訂貨單位量</th>
-                                <th>單位數量</th>
-                                <th>單位價格</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="product in products">
-                                <td>{{product.ProductName}}</td>
-                                <td>{{product.UnitsInStock}}</td>
-                                <td>{{product.UnitsOnOrder}}</td>
-                                <td>{{product.QuantityPerUnit}}</td>
-                                <td>{{product.UnitPrice}}</td>
-                            </tr>
-                        </tbody>
-                    </table>
+<div id="productApp" >
+    <!--清單頁面-->
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="pull-right">
+                <a href="#newItemDataPage" type="button" role="button" data-toggle="modal" class="btn btn-primary" ng-click="newClick()">新增產品</a>
+            </div>
+            <h1>產品管理</h1>
+        </div>
+        <div class="panel-body">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>商品名稱</th>
+                                    <th>庫存單位量</th>
+                                    <th>訂貨單位量</th>
+                                    <th>單位數量</th>
+                                    <th>單位價格</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="product in products">
+                                    <td>{{product.ProductName}}</td>
+                                    <td>{{product.UnitsInStock}}</td>
+                                    <td>{{product.UnitsOnOrder}}</td>
+                                    <td>{{product.QuantityPerUnit}}</td>
+                                    <td>{{product.UnitPrice}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+    <!--新增畫面-->
+    <div class="modal fade" id="newItemDataPage" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form class="form-horizontal" v-on:submit.prevent="onAddSubmit">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            ×
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel">
+                            新增產品
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label required">
+                                            產品名稱
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" v-model="addProduct.ProductName" required/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label required">
+                                            單位數量
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" v-model="addProduct.QuantityPerUnit" required />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label required">
+                                            類型
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <select class="form-control valid no-padding-top" v-model="addProduct.CategoryID">
+                                                <option v-for="cat in categories" v-bind:value="cat.CategoryID">{{cat.CategoryName}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">
+                                            供應商
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <select class="form-control valid no-padding-top" v-model="addProduct.SupplierID">
+                                                <option v-for="sup in suppliers" v-bind:value="sup.SupplierID">{{sup.CompanyName}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">
+                                            價格
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <input type=number step=0.01 class="form-control" v-model="addProduct.UnitPrice" min="0" max="999999999" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-danger">
+                            確認
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
-
 @section scripts
 {
     <script src="http://cdnjs.cloudflare.com/ajax/libs/vue/2.0.0-rc.1/vue.min.js"></script>
@@ -43,11 +121,10 @@
         var vm = new Vue({
             el: '#productApp',
             data: {
-                newTodo: '',
-                todos: [
-                  { text: 'Add some todos' }
-                ],
-                products: []
+                products: [],
+                categories: [],
+                suppliers: [],
+                addProduct: { ProductName: "", SupplierID: 1, CategoryID: 1, QuantityPerUnit: "", UnitPrice: 0 }
             },
             methods: {
                 refreshProducts: function () {
@@ -55,25 +132,61 @@
                         type: "POST",
                         url: '@Url.Action("JsonGetProducts", "Product")',
                         success: function (data) {
-                            if (data.Success == true);
-                            vm.products = data.Data;
+                            console.log(data);
+                            if (data.Success == true) {
+                                vm.products = data.Data;
+                            } else {
+                                alert(data.Message);
+                            }
                         }
                     })
                 },
-                addTodo: function () {
-                    var text = this.newTodo.trim();
-
-                    if (text) {
-                        this.todos.push({ text: text });
-                        this.newTodo = '';
-                    }
+                refreshSuppliers: function () {
+                    $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("JsonGetSuppliers", "Product")',
+                        success: function (data) {
+                            if (data.Success == true) {
+                                vm.suppliers = data.Data;
+                            } else {
+                                alert(data.Message);
+                            }
+                        }
+                    })
                 },
-                removeTodo: function (index) {
-                    this.todos.splice(index, 1);
+                refreshCategories: function () {
+                    $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("JsonGetCategories", "Product")',
+                        success: function (data) {
+                            if (data.Success == true) {
+                                vm.categories = data.Data;
+                            } else {
+                                alert(data.Message);
+                            }
+                        }
+                    })
+                },
+                onAddSubmit: function () {
+                    $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("JsonAddProduct", "Product")',
+                        data: vm.addProduct,
+                        success: function (data) {
+                            if (data.Success == true) {
+                                vm.refreshProducts();
+                                $('#newItemDataPage').modal('hide');
+                            } else {
+                                alert(data.Message);
+                            }
+                        }
+                    })
                 }
             }
         });
 
         vm.refreshProducts();
+        vm.refreshCategories();
+        vm.refreshSuppliers();
     </script>
 }

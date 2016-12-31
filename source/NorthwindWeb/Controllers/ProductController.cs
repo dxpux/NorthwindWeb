@@ -31,12 +31,61 @@ namespace NorthwindWeb.Controllers
             return View(this.productService.GetAll());
         }
 
+        /// <summary>
+        /// 取得產品清單 api
+        /// </summary>
+        /// <returns></returns>
         [HttpPost]
         public JsonResult JsonGetProducts()
         {
             try
             {
                 return Json(new ReContent<IEnumerable<Product>>() { Success = true, Data = this.productService.GetAll() });
+            }
+            catch (Exception ex)
+            {
+                return Json(new ReContent<string>() { Success = false, Message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public JsonResult JsonGetSuppliers()
+        {
+            try
+            {
+                return Json(new ReContent<IEnumerable<Supplier>>() { Success = true, Data = this.productService.GetAllSupplier () });
+            }
+            catch (Exception ex)
+            {
+                return Json(new ReContent<string>() { Success = false, Message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public JsonResult JsonGetCategories()
+        {
+            try
+            {
+                return Json(new ReContent<IEnumerable<Category>>() { Success = true, Data = this.productService.GetAllCategory() });
+            }
+            catch (Exception ex)
+            {
+                return Json(new ReContent<string>() { Success = false, Message = ex.Message });
+            }
+        }
+
+        /// <summary>
+        /// 新增產品 api
+        /// </summary>
+        /// <param name="product"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult JsonAddProduct(Product product)
+        {
+            try
+            {
+                productService.Add(product);
+                return Json(new ReContent<string> { Success = true });
             }
             catch (Exception ex)
             {

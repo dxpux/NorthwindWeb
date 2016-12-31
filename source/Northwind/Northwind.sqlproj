@@ -100,5 +100,8 @@
     <Build Include="dbo\Stored Procedures\CustOrdersDetail.sql" />
     <Build Include="dbo\Stored Procedures\CustOrderHist.sql" />
     <Build Include="dbo\Stored Procedures\GetProducts.sql" />
+    <Build Include="dbo\Stored Procedures\GetSuppliers.sql" />
+    <Build Include="dbo\Stored Procedures\GetCategories.sql" />
+    <Build Include="dbo\Stored Procedures\AddProducts.sql" />
   </ItemGroup>
 </Project>

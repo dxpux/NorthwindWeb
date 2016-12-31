@@ -17,5 +17,6 @@ namespace NorthwindModel
         public int UnitsInStock { get; set; }
         public int UnitsOnOrder { get; set; }
         public int ReorderLevel { get; set; }
+        public bool Discontinued { get; set; }
     }
 }
