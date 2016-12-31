@@ -1,6 +1,6 @@
 ﻿-- =============================================
 -- Author:		Ligi
--- Create date: 2015/12/31
+-- Create date: 2016/12/31
 -- Description:	取得所有產品
 -- =============================================
 CREATE PROCEDURE [dbo].[GetProducts]

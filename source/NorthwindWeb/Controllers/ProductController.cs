@@ -48,6 +48,10 @@ namespace NorthwindWeb.Controllers
             }
         }
 
+        /// <summary>
+        /// 取得供應商 api
+        /// </summary>
+        /// <returns></returns>
         [HttpPost]
         public JsonResult JsonGetSuppliers()
         {
@@ -61,6 +65,10 @@ namespace NorthwindWeb.Controllers
             }
         }
 
+        /// <summary>
+        /// 取得商品種類 api
+        /// </summary>
+        /// <returns></returns>
         [HttpPost]
         public JsonResult JsonGetCategories()
         {
@@ -84,7 +92,34 @@ namespace NorthwindWeb.Controllers
         {
             try
             {
-                productService.Add(product);
+                this.productService.Add(product);
+                return Json(new ReContent<string> { Success = true });
+            }
+            catch (Exception ex)
+            {
+                return Json(new ReContent<string>() { Success = false, Message = ex.Message });
+            }
+        }
+
+        /// <summary>
+        /// 更新產品資訊 api
+        /// </summary>
+        /// <param name="product"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult JsonModifyProduct(Product modifyProduct)
+        {
+            try
+            {
+                var product = this.productService.FindByID(modifyProduct.ProductID);
+                if (product == null) throw new Exception("未知的 ProductID");
+                product.ProductName = modifyProduct.ProductName;
+                product.QuantityPerUnit = modifyProduct.QuantityPerUnit;
+                product.CategoryID = modifyProduct.CategoryID;
+                product.SupplierID = modifyProduct.SupplierID;
+                product.UnitPrice = modifyProduct.UnitPrice;
+
+                this.productService.Update(product);
                 return Json(new ReContent<string> { Success = true });
             }
             catch (Exception ex)

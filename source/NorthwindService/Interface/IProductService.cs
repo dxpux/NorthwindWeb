@@ -10,6 +10,8 @@ namespace NorthwindService.Interface
     public interface IProductService
     {
         void Add(Product product);
+        Product FindByID(int productID);
+        void Update(Product product);
         IEnumerable<Product> GetAll();
         IEnumerable<Supplier> GetAllSupplier();
         IEnumerable<Category> GetAllCategory();

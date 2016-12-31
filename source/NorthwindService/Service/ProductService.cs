@@ -27,6 +27,11 @@ namespace NorthwindService.Service
             this.productRepository.Add(product);
         }
 
+        public Product FindByID(int productID)
+        {
+            return GetAll().Where(p => p.ProductID == productID).FirstOrDefault();
+        }
+
         public IEnumerable<Product> GetAll()
         {
             return this.productRepository.GetAll();
@@ -40,6 +45,19 @@ namespace NorthwindService.Service
         public IEnumerable<Supplier> GetAllSupplier()
         {
             return this.productRepository.GetAllSupplier();
+        }
+
+        public void Update(Product product)
+        {
+            if (GetAll()
+                .Where(p => 
+                p.ProductID != product.ProductID
+                && p.ProductName == product.ProductName).Any())
+            {
+                throw new Exception("更新產品名與其它產品同名");
+            }
+
+            this.productRepository.Update(product);
         }
     }
 }

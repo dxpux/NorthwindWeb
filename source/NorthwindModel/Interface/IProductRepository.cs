@@ -11,6 +11,7 @@ namespace NorthwindModel.Interface
         #region Product
 
         void Add(Product product);
+        void Update(Product product);
         Product FindByName(string productName);
         IEnumerable<Product> GetAll();
 

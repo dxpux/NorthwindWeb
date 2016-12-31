@@ -103,5 +103,6 @@
     <Build Include="dbo\Stored Procedures\GetSuppliers.sql" />
     <Build Include="dbo\Stored Procedures\GetCategories.sql" />
     <Build Include="dbo\Stored Procedures\AddProducts.sql" />
+    <Build Include="dbo\Stored Procedures\UpdateProducts.sql" />
   </ItemGroup>
 </Project>

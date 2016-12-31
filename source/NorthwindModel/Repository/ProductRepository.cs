@@ -37,8 +37,8 @@ namespace NorthwindModel.Repository
                     UnitsOnOrder = 0,
                     ReorderLevel = 0,
                     Discontinued = false
-                }
-                , commandType: CommandType.StoredProcedure);
+                },
+                commandType: CommandType.StoredProcedure);
         }
 
         public Product FindByName(string productName)
@@ -62,6 +62,15 @@ namespace NorthwindModel.Repository
         {
             ConnectionOpen();
             return this.conn.Query<Supplier>("GetSuppliers", commandType: CommandType.StoredProcedure);
+        }
+
+        public void Update(Product product)
+        {
+            ConnectionOpen();
+            this.conn.Execute(
+                "UpdateProducts",
+                param: product,
+                commandType: CommandType.StoredProcedure);
         }
 
         private void ConnectionOpen()
