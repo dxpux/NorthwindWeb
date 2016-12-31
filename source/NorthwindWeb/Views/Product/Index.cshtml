@@ -1,10 +1,8 @@
-﻿@using NorthwindModel
-@model IEnumerable<Product>
-@{
+﻿@{
     ViewBag.Title = "產品管理";
 }
 
-<div class="panel panel-default">
+<div id="productApp" class="panel panel-default">
     <div class="panel-heading">
         <h1>產品管理</h1>
     </div>
@@ -23,16 +21,13 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var product in Model)
-                            {
-                                <tr>
-                                    <td>@product.ProductName</td>
-                                    <td>@product.UnitsInStock</td>
-                                    <td>@product.UnitsOnOrder</td>
-                                    <td>@product.QuantityPerUnit</td>
-                                    <td>@product.UnitPrice</td>
-                                </tr>
-                            }
+                            <tr v-for="product in products">
+                                <td>{{product.ProductName}}</td>
+                                <td>{{product.UnitsInStock}}</td>
+                                <td>{{product.UnitsOnOrder}}</td>
+                                <td>{{product.QuantityPerUnit}}</td>
+                                <td>{{product.UnitPrice}}</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -40,3 +35,45 @@
         </div>
     </div>
 </div>
+
+@section scripts
+{
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/vue/2.0.0-rc.1/vue.min.js"></script>
+    <script>
+        var vm = new Vue({
+            el: '#productApp',
+            data: {
+                newTodo: '',
+                todos: [
+                  { text: 'Add some todos' }
+                ],
+                products: []
+            },
+            methods: {
+                refreshProducts: function () {
+                    $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("JsonGetProducts", "Product")',
+                        success: function (data) {
+                            if (data.Success == true);
+                            vm.products = data.Data;
+                        }
+                    })
+                },
+                addTodo: function () {
+                    var text = this.newTodo.trim();
+
+                    if (text) {
+                        this.todos.push({ text: text });
+                        this.newTodo = '';
+                    }
+                },
+                removeTodo: function (index) {
+                    this.todos.splice(index, 1);
+                }
+            }
+        });
+
+        vm.refreshProducts();
+    </script>
+}
