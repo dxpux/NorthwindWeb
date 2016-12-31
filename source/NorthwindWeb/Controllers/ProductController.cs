@@ -1,4 +1,5 @@
 ﻿using NorthwindModel.Repository;
+using NorthwindService.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,16 +10,16 @@ namespace NorthwindWeb.Controllers
 {
     public class ProductController : Controller
     {
-        private readonly ProductRepository productRepositoy;
+        private readonly IProductService productService;
 
-        public ProductController()
+        public ProductController(IProductService productService)
         {
-            this.productRepositoy = new ProductRepository();
+            this.productService = productService;
         }
-        // GET: Product
+
         public ActionResult Index()
         {
-            return View(this.productRepositoy.GetAll());
+            return View(this.productService.GetAll());
         }
     }
 }

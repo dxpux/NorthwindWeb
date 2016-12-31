@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using NorthwindModel.Interface;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace NorthwindModel.Repository
 {
-    public class ProductRepository
+    public class ProductRepository : IProductRepository
     {
         private readonly IDbConnection conn;
 
