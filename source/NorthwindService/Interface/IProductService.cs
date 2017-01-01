@@ -12,6 +12,8 @@ namespace NorthwindService.Interface
         void Add(Product product);
         Product FindByID(int productID);
         void Update(Product product);
+        void Continued(int productID);
+        void Discontinued(int productID);
         IEnumerable<Product> GetAll();
         IEnumerable<Supplier> GetAllSupplier();
         IEnumerable<Category> GetAllCategory();

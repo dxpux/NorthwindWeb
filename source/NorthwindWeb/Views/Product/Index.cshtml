@@ -27,12 +27,16 @@
                             </thead>
                             <tbody>
                                 <tr v-for="product in products">
-                                    <td>{{product.ProductName}}</td>
+                                    <td>{{product.ProductName}}<span v-show="product.Discontinued">[停用]</span></td>
                                     <td>{{product.UnitsInStock}}</td>
                                     <td>{{product.UnitsOnOrder}}</td>
                                     <td>{{product.QuantityPerUnit}}</td>
                                     <td>{{product.UnitPrice}}</td>
-                                    <td><a href="#updateItemDataPage" type="button" role="button" data-toggle="modal" class="btn btn-primary" v-on:click="modifyClick(product)">修改</a></td>
+                                    <td>
+                                        <a href="#updateItemDataPage" type="button" role="button" data-toggle="modal" class="btn btn-primary" v-show="!product.Discontinued" v-on:click="modifyClick(product)">修改</a>
+                                        <button type="button" class="btn btn-danger" v-show="!product.Discontinued" v-on:click="discontinuedClick(product)">停用</button>
+                                        <button type="button" class="btn btn-danger" v-show="product.Discontinued" v-on:click="continuedClick(product)">複用</button>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -195,6 +199,18 @@
 {
     <script src="http://cdnjs.cloudflare.com/ajax/libs/vue/2.0.0-rc.1/vue.min.js"></script>
     <script>
+        var apiPost = function (url, data, success) {
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: data,
+                success: success,
+                error: function () {
+                    alert('api 通訊失敗');
+                }
+            })
+        }
+
         var vm = new Vue({
             el: '#productApp',
             data: {
@@ -206,43 +222,40 @@
             },
             methods: {
                 refreshProducts: function () {
-                    $.ajax({
-                        type: "POST",
-                        url: '@Url.Action("JsonGetProducts", "Product")',
-                        success: function (data) {
+                    apiPost(
+                        '@Url.Action("JsonGetProducts", "Product")',
+                        null,
+                        function (data) {
                             if (data.Success == true) {
                                 vm.products = data.Data;
                             } else {
                                 alert(data.Message);
                             }
-                        }
-                    })
+                        });
                 },
                 refreshSuppliers: function () {
-                    $.ajax({
-                        type: "POST",
-                        url: '@Url.Action("JsonGetSuppliers", "Product")',
-                        success: function (data) {
+                    apiPost(
+                        '@Url.Action("JsonGetSuppliers", "Product")',
+                        null,
+                        function (data) {
                             if (data.Success == true) {
                                 vm.suppliers = data.Data;
                             } else {
                                 alert(data.Message);
                             }
-                        }
-                    })
+                        });
                 },
                 refreshCategories: function () {
-                    $.ajax({
-                        type: "POST",
-                        url: '@Url.Action("JsonGetCategories", "Product")',
-                        success: function (data) {
+                    apiPost(
+                        '@Url.Action("JsonGetCategories", "Product")',
+                        null,
+                        function (data) {
                             if (data.Success == true) {
                                 vm.categories = data.Data;
                             } else {
                                 alert(data.Message);
                             }
-                        }
-                    })
+                        });
                 },
                 newClick: function () {
                     vm.addProduct.ProductName = "";
@@ -252,19 +265,17 @@
                     vm.addProduct.UnitPrice = 0
                 },
                 onAddSubmit: function () {
-                    $.ajax({
-                        type: "POST",
-                        url: '@Url.Action("JsonAddProduct", "Product")',
-                        data: vm.addProduct,
-                        success: function (data) {
+                    apiPost(
+                        '@Url.Action("JsonAddProduct", "Product")',
+                        vm.addProduct,
+                        function (data) {
                             if (data.Success == true) {
                                 vm.refreshProducts();
                                 $('#newItemDataPage').modal('hide');
                             } else {
                                 alert(data.Message);
                             }
-                        }
-                    })
+                        });
                 },
                 modifyClick: function (product) {
                     vm.modifyProduct.ProductID = product.ProductID;
@@ -275,19 +286,41 @@
                     vm.modifyProduct.UnitPrice = product.UnitPrice;
                 },
                 onModifySubmit: function () {
-                     $.ajax({
-                        type: "POST",
-                        url: '@Url.Action("JsonModifyProduct", "Product")',
-                         data: vm.modifyProduct,
-                        success: function (data) {
+                    apiPost(
+                        '@Url.Action("JsonModifyProduct", "Product")',
+                        vm.modifyProduct,
+                        function (data) {
                             if (data.Success == true) {
                                 vm.refreshProducts();
                                 $('#updateItemDataPage').modal('hide');
                             } else {
                                 alert(data.Message);
                             }
-                        }
-                    })
+                        });
+                },
+                discontinuedClick: function (product) {
+                    apiPost(
+                        '@Url.Action("JsonDiscontinuedProduct", "Product")',
+                        {productID: product.ProductID},
+                        function (data) {
+                            if (data.Success == true) {
+                                vm.refreshProducts();
+                            } else {
+                                alert(data.Message);
+                            }
+                        });
+                },
+                continuedClick: function (product) {
+                    apiPost(
+                        '@Url.Action("JsonContinuedProduct", "Product")',
+                        { productID: product.ProductID },
+                        function (data) {
+                            if (data.Success == true) {
+                                vm.refreshProducts();
+                            } else {
+                                alert(data.Message);
+                            }
+                        });
                 }
             },
             mounted: function () {

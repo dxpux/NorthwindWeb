@@ -127,5 +127,43 @@ namespace NorthwindWeb.Controllers
                 return Json(new ReContent<string>() { Success = false, Message = ex.Message });
             }
         }
+
+        /// <summary>
+        /// 停止產品 api
+        /// </summary>
+        /// <param name="productID"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult JsonDiscontinuedProduct(int productID)
+        {
+            try
+            {
+                this.productService.Discontinued(productID);
+                return Json(new ReContent<string> { Success = true });
+            }
+            catch (Exception ex)
+            {
+                return Json(new ReContent<string>() { Success = false, Message = ex.Message });
+            }
+        }
+
+        /// <summary>
+        /// 複用產品 api
+        /// </summary>
+        /// <param name="productID"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult JsonContinuedProduct(int productID)
+        {
+            try
+            {
+                this.productService.Continued(productID);
+                return Json(new ReContent<string> { Success = true });
+            }
+            catch (Exception ex)
+            {
+                return Json(new ReContent<string>() { Success = false, Message = ex.Message });
+            }
+        }
     }
 }

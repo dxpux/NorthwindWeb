@@ -46,6 +46,11 @@ namespace NorthwindModel.Repository
             return GetAll().Where(p => p.ProductName == productName).FirstOrDefault();
         }
 
+        public Product FindByID(int productID)
+        {
+            return GetAll().Where(p => p.ProductID == productID).FirstOrDefault();
+        }
+
         public IEnumerable<Product> GetAll()
         {
             ConnectionOpen();

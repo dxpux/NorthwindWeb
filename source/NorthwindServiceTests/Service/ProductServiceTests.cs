@@ -20,7 +20,7 @@ namespace NorthwindService.Service.Tests
         {
             //Arrange
             IProductRepository stubProductRepo = Substitute.For<IProductRepository>();
-            stubProductRepo.GetAll().Returns(new List<Product>() { new Product { ProductName = "BanKey" } });
+            stubProductRepo.FindByName("BanKey").Returns(new Product { ProductName = "BanKey" });
             var target = new ProductService(stubProductRepo);
             var addProduct = new Product() { ProductName = "BanKey" };
 
@@ -50,6 +50,32 @@ namespace NorthwindService.Service.Tests
 
             //Act
             target.Update(modifyProduct);
+
+            //Assert
+            Assert.Fail();
+        }
+
+        [TestMethod()]
+        [ExpectedException(typeof(Exception))]
+        public void DiscontinuedTest_尚有訂單的產品不能停用()
+        {
+            //Arrange
+            IProductRepository stubProductRepository = Substitute.For<IProductRepository>();
+            stubProductRepository.FindByID(2)
+                .Returns(
+                new Product
+                {
+                    ProductID = 2,
+                    ProductName = "BanKey",
+                    UnitsOnOrder = 3,//產品訂單未消
+                    Discontinued = false
+                }
+                );
+            var target = new ProductService(stubProductRepository);
+            int discontinuedID = 2;
+
+            //Act
+            target.Discontinued(discontinuedID);
 
             //Assert
             Assert.Fail();

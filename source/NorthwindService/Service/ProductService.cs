@@ -19,12 +19,32 @@ namespace NorthwindService.Service
 
         public void Add(Product product)
         {
-            if (GetAll().Where(p => p.ProductName == product.ProductName).Any())
+            if (this.productRepository.FindByName(product.ProductName) != null)
             {
                 throw new Exception("同名產品已存在");
             }
 
             this.productRepository.Add(product);
+        }
+
+        public void Continued(int productID)
+        {
+            var product = this.productRepository.FindByID(productID);
+            product.Discontinued = false;
+            this.productRepository.Update(product);
+        }
+
+        public void Discontinued(int productID)
+        {
+            var product = this.productRepository.FindByID(productID);
+            if (product == null) return;
+            if (product.UnitsOnOrder > 0)
+            {
+                throw new Exception("產品尚有訂單，無法停用");
+            }
+
+            product.Discontinued = true;
+            this.productRepository.Update(product);
         }
 
         public Product FindByID(int productID)

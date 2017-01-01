@@ -13,6 +13,7 @@ namespace NorthwindModel.Interface
         void Add(Product product);
         void Update(Product product);
         Product FindByName(string productName);
+        Product FindByID(int productID);
         IEnumerable<Product> GetAll();
 
         #endregion
