@@ -1,5 +1,7 @@
 ﻿using Autofac;
 using Autofac.Integration.Mvc;
+using NorthwindModel.Infrastructure;
+using NorthwindModel.Interface;
 using NorthwindModel.Repository;
 using NorthwindService.Service;
 using System;
@@ -24,7 +26,7 @@ namespace NorthwindWeb
 
 
             //逐一設定寫法
-            //builder.RegisterType<指定類別>().As<指定類別所實作介面>().InstancePerRequest();
+            builder.RegisterType<ConnectionFactory>().As<IConnectionFactory>().InstancePerRequest();
 
             //該 Assembly 中每一個尾名 Repository 的 type 與其所實作的介面對應，生命週期為每一次 Request
             builder.RegisterAssemblyTypes(typeof(ProductRepository).Assembly)

@@ -15,14 +15,13 @@ namespace NorthwindModel.Repository
     {
         private readonly IDbConnection conn;
 
-        public ProductRepository()
+        public ProductRepository(IConnectionFactory connFactory)
         {
-            this.conn = new SqlConnection(ConfigurationManager.ConnectionStrings["Northwind"].ToString());
+            this.conn = connFactory.Get();
         }
 
         public void Add(Product product)
         {
-            ConnectionOpen();
             this.conn.Execute(
                 "AddProducts",
                 param:
@@ -53,34 +52,25 @@ namespace NorthwindModel.Repository
 
         public IEnumerable<Product> GetAll()
         {
-            ConnectionOpen();
             return this.conn.Query<Product>("GetProducts", commandType: CommandType.StoredProcedure);
         }
 
         public IEnumerable<Category> GetAllCategory()
         {
-            ConnectionOpen();
             return this.conn.Query<Category>("GetCategories", commandType: CommandType.StoredProcedure);
         }
 
         public IEnumerable<Supplier> GetAllSupplier()
         {
-            ConnectionOpen();
             return this.conn.Query<Supplier>("GetSuppliers", commandType: CommandType.StoredProcedure);
         }
 
         public void Update(Product product)
         {
-            ConnectionOpen();
             this.conn.Execute(
                 "UpdateProducts",
                 param: product,
                 commandType: CommandType.StoredProcedure);
-        }
-
-        private void ConnectionOpen()
-        {
-            if (conn.State == ConnectionState.Closed) conn.Open();
         }
     }
 }
