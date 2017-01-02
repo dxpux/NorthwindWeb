@@ -2,6 +2,7 @@
 using NorthwindModel.Repository;
 using NorthwindService.Interface;
 using NorthwindWeb.Common;
+using NorthwindWeb.Filters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,6 +37,7 @@ namespace NorthwindWeb.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
+        [AjaxValidateAntiForgeryToken]
         public JsonResult JsonGetProducts()
         {
             try
@@ -53,6 +55,7 @@ namespace NorthwindWeb.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
+        [AjaxValidateAntiForgeryToken]
         public JsonResult JsonGetSuppliers()
         {
             try
@@ -70,6 +73,7 @@ namespace NorthwindWeb.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
+        [AjaxValidateAntiForgeryToken]
         public JsonResult JsonGetCategories()
         {
             try
@@ -88,6 +92,7 @@ namespace NorthwindWeb.Controllers
         /// <param name="product"></param>
         /// <returns></returns>
         [HttpPost]
+        [AjaxValidateAntiForgeryToken]
         public JsonResult JsonAddProduct(Product product)
         {
             try
@@ -107,6 +112,7 @@ namespace NorthwindWeb.Controllers
         /// <param name="product"></param>
         /// <returns></returns>
         [HttpPost]
+        [AjaxValidateAntiForgeryToken]
         public JsonResult JsonModifyProduct(Product modifyProduct)
         {
             try
@@ -134,6 +140,7 @@ namespace NorthwindWeb.Controllers
         /// <param name="productID"></param>
         /// <returns></returns>
         [HttpPost]
+        [AjaxValidateAntiForgeryToken]
         public JsonResult JsonDiscontinuedProduct(int productID)
         {
             try
@@ -153,6 +160,7 @@ namespace NorthwindWeb.Controllers
         /// <param name="productID"></param>
         /// <returns></returns>
         [HttpPost]
+        [AjaxValidateAntiForgeryToken]
         public JsonResult JsonContinuedProduct(int productID)
         {
             try

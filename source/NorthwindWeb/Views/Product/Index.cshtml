@@ -204,6 +204,9 @@
                 type: "POST",
                 url: url,
                 data: data,
+                headers: {
+                    'RequestVerificationToken': '@CommonRazorFunction.GetAntiForgeryToken()',
+                },
                 success: success,
                 error: function () {
                     alert('api 通訊失敗');
@@ -218,7 +221,7 @@
                 categories: [],
                 suppliers: [],
                 addProduct: { ProductName: "", SupplierID: 1, CategoryID: 1, QuantityPerUnit: "", UnitPrice: 0 },
-                modifyProduct:{ ProductID: 0, ProductName: "", SupplierID: 1, CategoryID: 1, QuantityPerUnit: "", UnitPrice: 0 }
+                modifyProduct: { ProductID: 0, ProductName: "", SupplierID: 1, CategoryID: 1, QuantityPerUnit: "", UnitPrice: 0 }
             },
             methods: {
                 refreshProducts: function () {
@@ -301,7 +304,7 @@
                 discontinuedClick: function (product) {
                     apiPost(
                         '@Url.Action("JsonDiscontinuedProduct", "Product")',
-                        {productID: product.ProductID},
+                        { productID: product.ProductID },
                         function (data) {
                             if (data.Success == true) {
                                 vm.refreshProducts();
